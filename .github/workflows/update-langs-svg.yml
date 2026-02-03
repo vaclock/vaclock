@@ -1,0 +1,38 @@
+name: Update WakaTime SVG
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # 每天 00:00 UTC
+  workflow_dispatch:     # 可手动触发
+
+jobs:
+  generate-svg:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+        # 如果你的脚本不依赖任何 npm 包，可以忽略这一行
+
+      - name: Generate WakaTime SVG
+        env:
+          WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
+        run: node generate-svg.js
+
+      - name: Commit and Push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: update WakaTime SVG"
+          branch: main
+          file_pattern: "assets/top-langs.svg"
+          author_name: github-actions
+          author_email: github-actions@users.noreply.github.com
+          push: true
