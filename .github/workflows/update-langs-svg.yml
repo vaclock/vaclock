@@ -18,14 +18,10 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
-        run: npm install
-        # 如果你的脚本不依赖任何 npm 包，可以忽略这一行
-
       - name: Generate WakaTime SVG
         env:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
-        run: node generate-svg.js
+        run: node generate-lang-chart.js
 
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v4
