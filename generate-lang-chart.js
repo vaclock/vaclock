@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 1️⃣ 配置
+const WAKATIME_API_KEY = process.env.WAKATIME_API_KEY;
 if (!WAKATIME_API_KEY) {
   console.error("Please set WAKATIME_API_KEY in GitHub Actions secrets");
   process.exit(1);
