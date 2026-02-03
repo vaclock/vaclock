@@ -1,0 +1,28 @@
+name: Generate GitHub Stats
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *" # 每天 UTC 01:00
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Generate Top Langs SVG
+        run: |
+          curl -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" \
+          "https://github-readme-stats.vercel.app/api/top-langs/?username=vaclock&layout=compact&hide_border=true" \
+          -o assets/top-langs.svg
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add assets/top-langs.svg
+          git commit -m "chore: update github stats" || echo "No changes"
+          git push
