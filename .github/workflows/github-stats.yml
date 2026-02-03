@@ -3,7 +3,7 @@ name: Generate GitHub Stats
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 1 * * *" # 每天 UTC 01:00
+    - cron: "0 1 * * *"
 
 jobs:
   build:
@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      # ✅ 关键：创建目录
+      - name: Create assets directory
+        run: mkdir -p assets
 
       - name: Generate Top Langs SVG
         run: |
